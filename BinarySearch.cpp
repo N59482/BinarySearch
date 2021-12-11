@@ -4,9 +4,9 @@
 using namespace std;
 
 /*
-* Алгоритм быстрой сортировки.
+* Алгоритм быстрой сортировки. QuickSort()
 */
-void QuickSort(int* a, int left, int right)
+void QuickSort(int* a, const int left,const int right)
     {
         int il = left;
         int ir = right;
@@ -27,7 +27,7 @@ void QuickSort(int* a, int left, int right)
     };
 
 /*
-* Функция sort_fill принимает:
+* Функция sort_fill() принимает:
 * массив в виде укателя типа int,
 * размерность этого массива в виде константного знчения.
 * максимальное значения для элемента массива Max_val в виде константного значения.
@@ -42,7 +42,22 @@ void sort_fill(int *a, const int size, const int Max_val)
 		QuickSort(a,0,size-1);
 	};
 
-int BinarySearch(int * a, int size, int x)
+/*
+* Алгоритм бинарного поиска. BinarySearch()
+* Алгорим работает с упорядоченным массивом типа int и возвращает индекс искомого значения (индекс первого если начения дублируются)
+* Если значение не найдено возвращается -1 - что не может быть индексом.
+* Входными пораметрами являются:
+* - массив a[] - в виде указателя на первый элемент,
+* - количество элементов массива size в виде константного значения
+* - искомое значение x  в виде константного значения
+*
+* Определение значения элемента в середине структуры данных. Полученное значение сравнивается с ключом.
+* Если ключ меньше значения середины, то поиск осуществляется в первой половине элементов, иначе — во второй.
+* Поиск сводится к тому, что вновь определяется значение серединного элемента в выбранной половине и сравнивается с ключом.
+* Процесс продолжается до тех пор, пока не будет найден элемент со значением ключа или не станет пустым интервал для поиска.
+*/
+
+int BinarySearch(int * a, const int size, const int x)
 	{
 		int left = 0;
 		int right = size-1;
@@ -53,11 +68,11 @@ int BinarySearch(int * a, int size, int x)
 					else if (a[mid] < x) left = mid;
 							else return mid;
 			};			
-		return -404;
+		return -1;
 	};
 
 /*
-* Функция для вывода массива в консоль.
+* Функция show() для вывода массива в консоль.
 * Принимает указатель на первый элемент массива типа int 
 * Функция использует логику указателей для быстроты, хотя возможно в данном случае это не так актуально.
 */
@@ -69,19 +84,61 @@ void show(int *a, const int size)
 		cout<<endl;
 	}; 
 
+bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const int pool_tests = 1, const bool info = 0)
+	{
+		for(int i = 0; i < pool_tests; i++)
+			{
+				int a[arr_size]; // создаём массив
+				sort_fill(a,arr_size,Max_val); // заполняем и сортируем его
+				if(info) show(a,arr_size);
+				int x = rand() % Max_val; // формируем число которое будем искать в массиве
+				if(info) cout<<"X = "<<x<<endl;
+				int ix = BinarySearch(a,arr_size,x);// ищем его индекс проверяемым алогиртмом
+				if(info) cout<<"ККК"<<endl;
+				if (ix != -1)  
+					{
+						if(info) cout<<"BinarySearch find index of X = "<<ix<<endl;
+						// если оно присутствует в массиве (по результату проверяемого алогорима)
+						// проверяем правильно ли алгоримт нашёл индекс
+						if(a[ix] != x) 
+							{
+								if(info) cout<<"But a["<<ix<<"] = "<<a[ix]<<endl<<a[ix]<<" != "<<x<<"\n TEST is fallen";
+								return false; // если занчения не совпадают заканчиваем тестирование.
+							};
+					}
+				else
+					{
+						if(info) cout<<"BinarySearch cant find "<<x<<" in array\n";
+						// если оно НЕ присутствует в массиве (по результату проверяемого алогорима)
+						// ищем его в массиве
+						for(int it = 0; it < arr_size; it++)
+							if(a[it] == x) 
+								{
+									if(info) cout<<"But TEST find "<<x<<" with index "<<it<<"\n TEST is fallen";
+									return false; // если число всё таки есть в массиве - заканчиваем тестирование провалом.
+								};
+					};
+			};
+		if(info) cout<<"All test is good\n";
+		return true;// если все тесты прошли успешно.
+	};
+
 int main()
 	{
 		int a[10];
-		int index[] = {0,1,2,3,4,5,6,7,8,9};
+		// int index[] = {0,1,2,3,4,5,6,7,8,9};
         
-		sort_fill(a,SIZE,10);
+		// sort_fill(a,SIZE,10);
         
-        show(index, SIZE);
-		show(a, SIZE);
+  //       show(index, SIZE);
+		// show(a, SIZE);
 
-		int x = 0;
-		cout<<"What are u looking for?\n";
-		cin>>x;
-		cout<<"index is "<<BinarySearch(a,10,x);
+		// int x = 0;
+		// cout<<"What are u looking for?\n";
+		// cin>>x;
+		// cout<<"index is "<<BinarySearch(a,10,x);
+
+		BinarySearch_tests(10,9,2,1);
+
 		return 0;
 	}; 
