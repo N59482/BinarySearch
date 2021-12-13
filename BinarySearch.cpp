@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #define SIZE 10
 
 using namespace std;
@@ -64,10 +65,13 @@ int BinarySearch(int * a, const int size, const int x)
 		while(left != right)
 			{ 
 				int mid = (right+left)/2;
-				if(a[mid] > x) right = mid;
-					else if (a[mid] < x) left = mid;
+				cout<<left<<" = left\n"<<right<<" = right\n"<<mid<<" = mid\n";
+				if(a[mid] > x) right = mid - 1;
+					else if (a[mid] < x) left = mid + 1;
 							else return mid;
-			};			
+				cout<<endl;
+			};
+		if(a[left] == x) return left;
 		return -1;
 	};
 
@@ -88,13 +92,14 @@ bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const in
 	{
 		for(int i = 0; i < pool_tests; i++)
 			{
+			    if(info) cout<<"TEST "<<i<<" ================="<<endl;
 				int a[arr_size]; // создаём массив
 				sort_fill(a,arr_size,Max_val); // заполняем и сортируем его
 				if(info) show(a,arr_size);
 				int x = rand() % Max_val; // формируем число которое будем искать в массиве
 				if(info) cout<<"X = "<<x<<endl;
-				int ix = BinarySearch(a,arr_size,x);// ищем его индекс проверяемым алогиртмом
-				if(info) cout<<"ККК"<<endl;
+				int ix = BinarySearch(a,arr_size,x);// ищем его индекс проверяемым алгоритмом
+				if(info) cout<<"iX = "<<ix<<endl;
 				if (ix != -1)  
 					{
 						if(info) cout<<"BinarySearch find index of X = "<<ix<<endl;
@@ -118,6 +123,7 @@ bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const in
 									return false; // если число всё таки есть в массиве - заканчиваем тестирование провалом.
 								};
 					};
+				if(info) cout<<endl;
 			};
 		if(info) cout<<"All test is good\n";
 		return true;// если все тесты прошли успешно.
@@ -125,20 +131,25 @@ bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const in
 
 int main()
 	{
-		int a[10];
-		// int index[] = {0,1,2,3,4,5,6,7,8,9};
-        
-		// sort_fill(a,SIZE,10);
-        
-  //       show(index, SIZE);
-		// show(a, SIZE);
+ 	    srand(time(0));
+// 		int a[SIZE];
+// 		sort_fill(a,SIZE,10);
+// 		show(a, SIZE);
 
-		// int x = 0;
-		// cout<<"What are u looking for?\n";
-		// cin>>x;
-		// cout<<"index is "<<BinarySearch(a,10,x);
 
-		BinarySearch_tests(10,9,2,1);
+
+        int problem[] = {0, 0, 1, 2, 2, 3, 4, 6, 8, 8};
+        show(problem, SIZE);
+		int x = 0;
+		cout<<"What are u looking for?\n";
+		cin>>x;
+		cout<<"index is "<<BinarySearch(problem,SIZE,x);
+
+
+
+//      cout<<"Start test?\n";
+//      getchar();
+//  	BinarySearch_tests(10,9,90,1);
 
 		return 0;
 	}; 
