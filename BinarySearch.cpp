@@ -62,14 +62,15 @@ int BinarySearch(int * a, const int size, const int x)
 	{
 		int left = 0;
 		int right = size-1;
-		while(left != right)
+		while(left < right)
 			{ 
 				int mid = (right+left)/2;
-				cout<<left<<" = left\n"<<right<<" = right\n"<<mid<<" = mid\n";
+				// cout<<left<<" = left\n"<<right<<" = right\n"<<mid<<" = mid\n";
 				if(a[mid] > x) right = mid - 1;
 					else if (a[mid] < x) left = mid + 1;
 							else return mid;
-				cout<<endl;
+				// cout<<endl;
+				
 			};
 		if(a[left] == x) return left;
 		return -1;
@@ -88,11 +89,25 @@ void show(int *a, const int size)
 		cout<<endl;
 	}; 
 
-bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const int pool_tests = 1, const bool info = 0)
+/*
+* Функция BinarySearch_tests() тестирует алгоритм бинарного поиска
+* Функция принимает константные значения типа int: 
+* размер массива arr_size и его максимальное возможноe значениe Max_val
+* количество проводимых тестов pool_tests и bool модификтор info
+* код 1 для модификатора info добавляет вывод комментариев в консоль в каждом тесте а код 0 отключает их.
+* Функция проводит всего pool_tests тестов.
+* Каждый тест включает инициализацию, заполнение и сортировку массива a[arr_size] сотоящего из элементов от 0 до Max_val включительно.
+* Далее Бинарный поиск ищет в массиве рандомное число от 0 до Max_val включительно.
+* После нахождения которого алгоритм проверяет его правильность сверяя искомое значения с индексом котоый возвращает бинарный поиск.
+* Если же бинарный поиск не нашёл в массиве искомое число и вернул -1 то алгорим тесте ищет в массиве искомое число перебирая массив.
+* Если при каких то обстоятелствах бинарный поиск не проходит тест то дальнейшее тестирование прекращается и BinarySearch_tests() возвращяет 0.
+* Если все pool_tests пройдены успешно - возвращет 1
+*/
+bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const int pool_tests = 1, const bool info = 1)
 	{
 		for(int i = 0; i < pool_tests; i++)
 			{
-			    if(info) cout<<"TEST "<<i<<" ================="<<endl;
+			    if(info) cout<<"\n================= "<<"TEST "<<i+1<<" ================="<<endl;
 				int a[arr_size]; // создаём массив
 				sort_fill(a,arr_size,Max_val); // заполняем и сортируем его
 				if(info) show(a,arr_size);
@@ -125,31 +140,26 @@ bool BinarySearch_tests(const int arr_size = 10, const int Max_val = 9, const in
 					};
 				if(info) cout<<endl;
 			};
-		if(info) cout<<"All test is good\n";
+		if(info) cout<<"All tests is good\n";
 		return true;// если все тесты прошли успешно.
 	};
 
 int main()
 	{
  	    srand(time(0));
-// 		int a[SIZE];
-// 		sort_fill(a,SIZE,10);
-// 		show(a, SIZE);
-
-
-
-        int problem[] = {0, 0, 1, 2, 2, 3, 4, 6, 8, 8};
-        show(problem, SIZE);
+		int a[SIZE];
+		sort_fill(a,SIZE,10);
+		show(a, SIZE); 
 		int x = 0;
 		cout<<"What are u looking for?\n";
 		cin>>x;
-		cout<<"index is "<<BinarySearch(problem,SIZE,x);
+		cout<<"index is "<<BinarySearch(a,SIZE,x);
 
+        BinarySearch_tests();
 
-
-//      cout<<"Start test?\n";
-//      getchar();
-//  	BinarySearch_tests(10,9,90,1);
-
-		return 0;
+        cout<<"Starting 200000 tests\n";
+        getchar();
+     	if(BinarySearch_tests(1000,999,2000,0)) cout<<"All tests is good\n";
+    
+    	return 0;
 	}; 
